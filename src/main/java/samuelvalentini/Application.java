@@ -145,5 +145,9 @@ public class Application {
             averageOrder = averageOrd.getAsDouble();
         }
         System.out.println(MessageFormat.format("La media degli importi degli ordini è {0,number,#0.00} €", averageOrder));
+
+        // raggruppo i prodotti per categoria e sommo i prezzi
+        Map<String, Double> cumulativePricePerCategory = products.stream().collect(Collectors.groupingBy(product -> product.getCategory(), Collectors.summingDouble(product -> product.getPrice())));
+        System.out.println(cumulativePricePerCategory);
     }
 }
