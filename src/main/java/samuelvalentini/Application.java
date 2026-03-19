@@ -3,6 +3,8 @@ package samuelvalentini;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Application {
 
@@ -122,6 +124,8 @@ public class Application {
                 customers.get(2)
         ));
 
+        Map<Customer, List<Order>> ordersByCustomers = orders.stream().collect(Collectors.groupingBy(order -> order.getCustomer()));
+        ordersByCustomers.forEach((customer, ordersByCustomer) -> System.out.println(customer + ": " + ordersByCustomer));
 
     }
 }
