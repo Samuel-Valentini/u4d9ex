@@ -124,22 +124,22 @@ public class Application {
         ));
 
         //raggruppare ordini per cliente
-        Map<Customer, List<Order>> ordersByCustomers = orders.stream().collect(Collectors.groupingBy(order -> order.getCustomer()));
+        Map<Customer, List<Order>> ordersByCustomers = orders.stream().collect(Collectors.groupingBy(Order::getCustomer));
         ordersByCustomers.forEach((customer, ordersByCustomer) -> System.out.println(customer + ": " + ordersByCustomer));
 
         //partendo dal risultato precedente
-        Map<Customer, Double> totalSpendPerCustomer = ordersByCustomers.entrySet().stream().collect(Collectors.toMap(element -> element.getKey(), value -> value.getValue().stream().mapToDouble(order -> order.getOrderTotal()).sum()));
+        Map<Customer, Double> totalSpendPerCustomer = ordersByCustomers.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, value -> value.getValue().stream().mapToDouble(order -> order.getOrderTotal()).sum()));
         totalSpendPerCustomer.forEach((customer, totalSpend) -> System.out.println(customer.getName() + " - Total: " + totalSpend));
 
         // altra versione partendo da orders
-        Map<Customer, Double> totalSpendPerCustomer2 = orders.stream().collect(Collectors.groupingBy((order -> order.getCustomer()), Collectors.summingDouble(order -> order.getOrderTotal())));
+        Map<Customer, Double> totalSpendPerCustomer2 = orders.stream().collect(Collectors.groupingBy((Order::getCustomer), Collectors.summingDouble(Order::getOrderTotal)));
         totalSpendPerCustomer2.forEach((customer, totalSpend) -> System.out.println(customer.getName() + " - Total: " + totalSpend));
 
         //prodotti più costosi
         List<Product> moreExpensiveProducts = products.stream().sorted(Comparator.comparing(Product::getPrice).reversed()).limit(10).toList();
         moreExpensiveProducts.forEach(product -> System.out.println(product.getCategory() + " - " + product.getName() + " - " + product.getPrice()));
 
-        OptionalDouble averageOrd = orders.stream().mapToDouble(order -> order.getOrderTotal()).average();
+        OptionalDouble averageOrd = orders.stream().mapToDouble(Order::getOrderTotal).average();
         double averageOrder = 0;
         if (averageOrd.isPresent()) {
             averageOrder = averageOrd.getAsDouble();
@@ -147,7 +147,7 @@ public class Application {
         System.out.println(MessageFormat.format("La media degli importi degli ordini è {0,number,#0.00} €", averageOrder));
 
         // raggruppo i prodotti per categoria e sommo i prezzi
-        Map<String, Double> cumulativePricePerCategory = products.stream().collect(Collectors.groupingBy(product -> product.getCategory(), Collectors.summingDouble(product -> product.getPrice())));
+        Map<String, Double> cumulativePricePerCategory = products.stream().collect(Collectors.groupingBy(Product::getCategory, Collectors.summingDouble(product -> product.getPrice())));
         System.out.println(cumulativePricePerCategory);
     }
 }
