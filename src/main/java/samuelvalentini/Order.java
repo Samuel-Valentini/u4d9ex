@@ -56,6 +56,10 @@ public class Order {
         return customer;
     }
 
+    public double getOrderTotal() {
+        return this.products.stream().mapToDouble(product -> product.getPrice()).sum();
+    }
+
     @Override
     public String toString() {
         return "Order{" +

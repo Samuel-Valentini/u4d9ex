@@ -126,6 +126,6 @@ public class Application {
 
         Map<Customer, List<Order>> ordersByCustomers = orders.stream().collect(Collectors.groupingBy(order -> order.getCustomer()));
         ordersByCustomers.forEach((customer, ordersByCustomer) -> System.out.println(customer + ": " + ordersByCustomer));
-
+        orders.forEach(order -> System.out.println(order.getOrderTotal()));
     }
 }
