@@ -128,7 +128,7 @@ public class Application {
         ordersByCustomers.forEach((customer, ordersByCustomer) -> System.out.println(customer + ": " + ordersByCustomer));
 
         //partendo dal risultato precedente
-        Map<Customer, Double> totalSpendPerCustomer = ordersByCustomers.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, value -> value.getValue().stream().mapToDouble(order -> order.getOrderTotal()).sum()));
+        Map<Customer, Double> totalSpendPerCustomer = ordersByCustomers.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, value -> value.getValue().stream().mapToDouble(Order::getOrderTotal).sum()));
         totalSpendPerCustomer.forEach((customer, totalSpend) -> System.out.println(customer.getName() + " - Total: " + totalSpend));
 
         // altra versione partendo da orders
@@ -147,7 +147,7 @@ public class Application {
         System.out.println(MessageFormat.format("La media degli importi degli ordini è {0,number,#0.00} €", averageOrder));
 
         // raggruppo i prodotti per categoria e sommo i prezzi
-        Map<String, Double> cumulativePricePerCategory = products.stream().collect(Collectors.groupingBy(Product::getCategory, Collectors.summingDouble(product -> product.getPrice())));
+        Map<String, Double> cumulativePricePerCategory = products.stream().collect(Collectors.groupingBy(Product::getCategory, Collectors.summingDouble(Product::getPrice)));
         System.out.println(cumulativePricePerCategory);
     }
 }

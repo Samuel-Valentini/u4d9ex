@@ -57,7 +57,7 @@ public class Order {
     }
 
     public double getOrderTotal() {
-        return this.products.stream().mapToDouble(product -> product.getPrice()).sum();
+        return this.products.stream().mapToDouble(Product::getPrice).sum();
     }
 
     @Override
