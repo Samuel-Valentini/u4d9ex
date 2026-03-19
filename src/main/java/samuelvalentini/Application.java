@@ -2,6 +2,7 @@ package samuelvalentini;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -124,6 +125,7 @@ public class Application {
                 customers.get(2)
         ));
 
+        //raggruppare ordini per cliente
         Map<Customer, List<Order>> ordersByCustomers = orders.stream().collect(Collectors.groupingBy(order -> order.getCustomer()));
         ordersByCustomers.forEach((customer, ordersByCustomer) -> System.out.println(customer + ": " + ordersByCustomer));
 
@@ -134,6 +136,10 @@ public class Application {
         // altra versione partendo da orders
         Map<Customer, Double> totalSpendPerCustomer2 = orders.stream().collect(Collectors.groupingBy((order -> order.getCustomer()), Collectors.summingDouble(order -> order.getOrderTotal())));
         totalSpendPerCustomer2.forEach((customer, totalSpend) -> System.out.println(customer.getName() + " - Total: " + totalSpend));
+
+        //prodotti più costosi
+        List<Product> moreExpensiveProducts = products.stream().sorted(Comparator.comparing(Product::getPrice).reversed()).limit(10).toList();
+        moreExpensiveProducts.forEach(product -> System.out.println(product.getCategory() + " - " + product.getName() + " - " + product.getPrice()));
 
     }
 }
