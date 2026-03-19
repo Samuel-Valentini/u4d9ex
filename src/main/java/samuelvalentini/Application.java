@@ -1,10 +1,8 @@
 package samuelvalentini;
 
+import java.text.MessageFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Application {
@@ -141,5 +139,11 @@ public class Application {
         List<Product> moreExpensiveProducts = products.stream().sorted(Comparator.comparing(Product::getPrice).reversed()).limit(10).toList();
         moreExpensiveProducts.forEach(product -> System.out.println(product.getCategory() + " - " + product.getName() + " - " + product.getPrice()));
 
+        OptionalDouble averageOrd = orders.stream().mapToDouble(order -> order.getOrderTotal()).average();
+        double averageOrder = 0;
+        if (averageOrd.isPresent()) {
+            averageOrder = averageOrd.getAsDouble();
+        }
+        System.out.println(MessageFormat.format("La media degli importi degli ordini è {0,number,#0.00} €", averageOrder));
     }
 }
