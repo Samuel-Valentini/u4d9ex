@@ -126,6 +126,7 @@ public class Application {
 
         Map<Customer, List<Order>> ordersByCustomers = orders.stream().collect(Collectors.groupingBy(order -> order.getCustomer()));
         ordersByCustomers.forEach((customer, ordersByCustomer) -> System.out.println(customer + ": " + ordersByCustomer));
-        orders.forEach(order -> System.out.println(order.getOrderTotal()));
+        Map<Customer, Double> totalSpendPerCustomer = ordersByCustomers.entrySet().stream().collect(Collectors.toMap(element -> element.getKey(), value -> value.getValue().stream().mapToDouble(order -> order.getOrderTotal()).sum()));
+        totalSpendPerCustomer.forEach((customer, totalSpend) -> System.out.println(customer.getName() + " - Total: " + totalSpend));
     }
 }
